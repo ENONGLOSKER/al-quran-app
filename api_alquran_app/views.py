@@ -24,6 +24,7 @@ def alquran_details(request, id):
         # Extract `ayat` and other relevant data
         ayat = data.get('ayat', [])
         surah_info = {
+            'nama': data.get('nama', ''),
             'nama_latin': data.get('nama_latin', ''),
             'jumlah_ayat': data.get('jumlah_ayat', 0),
             'tempat_turun': data.get('tempat_turun', ''),
