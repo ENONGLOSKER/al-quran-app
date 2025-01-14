@@ -18,14 +18,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 18px 20px;
+            padding: 14px;
             /* background-image: linear-gradient(to right, #21d1ad, #159b80); */
             color: white;
         }
 
         .header h1 {
-            font-size: 20px;
+            font-size: 18px;
             color: black;
+            width: 50%;
         }
 
         .search-bar {
@@ -59,7 +60,9 @@
         #icons {
             width: 22px;
             height: 22px;
-            color: #ffffff;
+            color: #159b80;
+            padding: 4px;
+            border-radius: 8px;
             /* transform: translateY(2px); */
         }
 
@@ -71,15 +74,16 @@
         section h4 {
             margin-top: -5px;
             font-size: 20px;
+            margin-bottom: -10px;
         }
 
         
         .last-read .details{
-            display: flex;
+            /* display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            color: white;
+            color: white; */
         }
         .last-read .details img{
             width: 120px;
@@ -174,26 +178,23 @@
 </head>
 <body>
     <div class="header">
-        <h1>Al-Qur'an</h1>
-        <form action="" class="search-bar">
-            <input type="text" placeholder="Cari surah...">
-            <button>
-                <ion-icon name="search-outline" id="icons"></ion-icon>
-            </button>
-        </form>
+        <a href="{% url 'alquran_list' %}">
+            <ion-icon name="chevron-back-outline" id="icons"></ion-icon>
+        </a>
+        <div class="" style=" width: 100%; display: flex; text-align: center; align-items: center; justify-content: center;">
+            <h1>{{ surah_info.nama_latin }}</h1>
+        </div>
     </div>
     <section>
-        <p>Assalamualaikum</p>
-        <h4>Zaenul Alqusairi</h4>
 
         <div class="last-read">
             <div class="details">
-                <div>
-                    <span>Terakhir dibaca</span>
-                    <h4>Surah {{ ayat.0.nama }}</h4>
-                    <p>Ayat Nomor {{ ayat.0.jumlah_ayat }}</p>
+                <div style="text-align: center;">
+                    <span>Surah</span>
+                    <h4>{{ surah_info.nama_latin }} ({{ surah_info.arti }})</h4>
+                    <span>{{ surah_info.tempat_turun }} | {{ surah_info.jumlah_ayat }} Ayat</span>
                 </div>
-                <img src="{% static 'img/alquran.png' %}" alt="Al-Qur'an Icon">
+                <!-- <img src="{% static 'img/alquran.png' %}" alt="Al-Qur'an Icon"> -->
             </div>
             <audio controls style="width: 100%;">
                 <source src="{{ surah_info.audio }}" type="audio/mpeg">
