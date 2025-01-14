@@ -8,10 +8,6 @@ def alquran_list(request):
 
     response = requests.get(api_url)
     data = response.json()
-
-    print('-------------------------')
-    print('DATA API :', data)
-
     if response.status_code == 200:
         return render(request, 'index.html', {'data': data})
     else:
