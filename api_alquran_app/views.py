@@ -11,11 +11,13 @@ def alquran_list(request):
     if response.status_code == 200:
         return render(request, 'index.html', {'data': data})
     else:
-        return render(request, 'index.html', {'data': None})
+        error_message = "Data tidak ada"
+
+        return render(request, 'index.html', {'error_message': error_message})
     
 def alquran_details(request, id):
     if not id:
-        return render(request, 'error.html', {'error_message': 'ID is required'})
+        return render(request, 'details.html', {'error_message': 'ID is required'})
 
     api_url = f"https://quran-api.santrikoding.com/api/surah/{id}"
     response = requests.get(api_url)
@@ -34,4 +36,5 @@ def alquran_details(request, id):
         }
         return render(request, 'details.html', {'surah_info': surah_info, 'ayat': ayat})
     else:
-        return render(request, 'error.html', {'error_message': 'Failed to retrieve data'})
+        error_message = "Data tidak ada"
+        return render(request, 'details.html', {'error_message': error_message})

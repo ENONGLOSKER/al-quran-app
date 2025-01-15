@@ -143,9 +143,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-PWA_APP_NAME = "Al-qur'an"
-PWA_APP_DESCRIPTION = "Al-qur'an - PWA"
-PWA_APP_THEME_COLOR = '#000000'
+
+PWA_APP_NAME = 'Al-Quran'
+PWA_APP_DESCRIPTION = "Panduan Hidup"
+PWA_APP_THEME_COLOR = '#0A0302'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
 PWA_APP_SCOPE = '/'
@@ -153,22 +154,38 @@ PWA_APP_ORIENTATION = 'any'
 PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
-	{
-		'src': 'static/img/icon.png', #ganti dengan alamat icon/logo/gambar yang ada di folder static
-		'sizes': '160x160'
-	}
+    {
+        'src': '/static/img/icon.png',
+        'sizes': '160x160'
+    }
 ]
 PWA_APP_ICONS_APPLE = [
-	{
-		'src': 'static/img/icon.png', #ganti dengan alamat icon/logo/gambar yang ada di folder static
-		'sizes': '160x160'
-	}
+    {
+        'src': '/static/img/icon.png',
+        'sizes': '160x160'
+    }
 ]
 PWA_APP_SPLASH_SCREEN = [
-	{
-		'src': 'static/img/icon.png', #ganti dengan alamat icon/logo/gambar yang ada di folder static
-		'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
-	}
+    # {
+    #     'src': '/static/img/icon.png',
+    #     'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    # }
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
+PWA_APP_SHORTCUTS = [
+    {
+        'name': 'Shortcut',
+        'url': '/',
+        'description': 'Shortcut to a page in my application'
+    }
+]
+PWA_APP_SCREENSHOTS = [
+    {
+      'src': '/static/img/icon.png',
+      'sizes': '750x1334',
+      "type": "image/png"
+    }
+]
+
+PWA_APP_DEBUG_MODE = DEBUG

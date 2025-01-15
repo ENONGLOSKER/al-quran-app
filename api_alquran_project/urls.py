@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from api_alquran_app import views
 # static
 from django.conf import settings
@@ -25,6 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.alquran_list, name='alquran_list'),
     path('details/<int:id>/', views.alquran_details, name='alquran_details'),
+    # pwa
+    path('', include('pwa.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
