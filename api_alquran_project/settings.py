@@ -174,18 +174,18 @@ PWA_APP_SPLASH_SCREEN = [
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
 PWA_APP_SHORTCUTS = [
-    {
-        'name': 'Shortcut',
-        'url': '/',
-        'description': 'Shortcut to a page in my application'
-    }
+    # {
+    #     'name': 'Shortcut',
+    #     'url': '/',
+    #     'description': 'Shortcut to a page in my application'
+    # }
 ]
 PWA_APP_SCREENSHOTS = [
-    {
-      'src': '/static/img/icon.png',
-      'sizes': '750x1334',
-      "type": "image/png"
-    }
+    # {
+    #   'src': '/static/img/icon.png',
+    #   'sizes': '750x1334',
+    #   "type": "image/png"
+    # }
 ]
 
 PWA_APP_DEBUG_MODE = DEBUG
