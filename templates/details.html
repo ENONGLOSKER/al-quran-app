@@ -1,8 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% load pwa %}
-    {% progressive_web_app_meta %}
+{% load pwa %}
+{% progressive_web_app_meta %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,8 +137,8 @@
         .surah {
             display: flex;
             justify-content: space-between;
-            align-items: end;
-            padding: 10px 20px;
+            align-items: center;
+            padding: 10px 14px;
             background-color: #ffffff;
             border-bottom: 2px solid #ddd;
             border-radius: 10px;
@@ -155,6 +156,7 @@
             align-items: start;
             justify-content: space-between;
             gap: 10px;
+            padding: 0px;
         }
 
         .surah .info span {
@@ -164,7 +166,7 @@
         }
 
         .surah .info span img {
-            width: 40px;
+            width: 30px;
             height: auto;
             position: absolute;
 
@@ -206,6 +208,7 @@
             justify-content: space-between;
             gap: 10px;
         }
+
         .toggle-buttons button {
             background-color: #03644F;
             color: white;
@@ -225,15 +228,19 @@
         .toggle-buttons button:hover {
             background-color: #7EC89D;
         }
+
         .toggle-buttons button:focus {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .toggle-buttons button #iconm{
+
+        .toggle-buttons button #iconm {
             background-color: #20846E;
             padding: 5px;
             border-radius: 50px;
         }
-
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -260,11 +267,11 @@
                     <ion-icon name="chevron-collapse" id="iconm"></ion-icon>
                     Scroll
                 </button>
-                <button id="toggle-terjemah">
+                <button id="toggle-all-terjemah">
                     <ion-icon name="book" id="iconm"></ion-icon>
                     Terjemah
                 </button>
-                <button id="toggle-terjemah">
+                <button id="toggle-all-latin"">
                     <ion-icon name="book" id="iconm"></ion-icon>
                     Latin
                 </button>
@@ -275,17 +282,31 @@
             {% for surah in ayat %}
             <div class="surah" style="display: flex; justify-content: space-between; gap: 10px;">
                 <div class="info">
-                    <span style="width: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <p>{{ surah.nomor }}</p>
-                        <img src="{% static 'img/iconsayat.png' %}" alt="">
+                    <span style="width: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <p style="font-size: 12px;">{{ surah.nomor }}</p>
+                        <img src="{% static 'img/iconsayat.png' %}" alt="nomor">
                     </span>
                 </div>
 
-                <div class="arabic" style="font-size: 23px; text-align: right; line-height: 40px;">{{ surah.ar }}</div>
+                <div class="">
+                    <div class="arabic"
+                        style="font-size: 23px; text-align:right; line-height: 40px; display: flex; flex-wrap: wrap; justify-content: end; overflow: auto;">
+                        {{surah.ar}}
+                    </div>
+                    <p class="latin hidden"
+                        style="margin-top: -1px; font-style: italic; font-size: 11px; text-align: right; color: #03644F;">
+                        {{surah.tr|safe }}
+                    </p>
+                    <p class="terjemah hidden" style="margin-top: -5px; font-size: 12px; text-align:justify ;">{{ surah.idn }}</p>
+                </div>
             </div>
             {% endfor %}
-
-            <!-- Add more surahs as needed -->
+        </div>
+        <div class="btn-control" style="position: fixed; bottom: 20px; left: 30px; display: block;">
+            <button id="auto-scroll-toggle"
+                style="background-color: #20846E; border: none; padding: 4px; border-radius: 50px; display: flex; justify-content: center; align-items: center; box-shadow: 2px 4px 20px #7EC89D;">
+                <ion-icon name="close-outline" id="icon" style="padding: 5px; color: white; font-size: 20px;"></ion-icon>
+            </button>
         </div>
     </section>
 
@@ -293,6 +314,116 @@
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let isScrolling = false;
+                let scrollInterval = null;
+    
+                const autoScrollButton = document.getElementById("auto-scroll-toggle");
+    
+                function startAutoScroll() {
+                    scrollInterval = setInterval(() => {
+                        window.scrollBy({ top: 1, behavior: "smooth" }); // Kecepatan scroll
+                    }, 10); // Interval scroll (10ms)
+                }
+    
+                function stopAutoScroll() {
+                    clearInterval(scrollInterval);
+                    scrollInterval = null;
+                }
+    
+                autoScrollButton.addEventListener("click", function () {
+                    if (isScrolling) {
+                        stopAutoScroll();
+                        autoScrollButton.innerHTML = `
+                                                                                                                                                    <ion-icon name="chevron-collapse" id="iconm"></ion-icon>
+                                                                                                                                                    Scroll
+                                                                                                                                                `;
+                    } else {
+                        startAutoScroll();
+                        autoScrollButton.innerHTML = `
+                                                                                                                                                    <ion-icon name="pause-circle" id="iconm"></ion-icon>
+                                                                                                                                                    Stop
+                                                                                                                                                `;
+                    }
+                    isScrolling = !isScrolling;
+                });
+            });
+        </script> -->
+    
+    <!-- terbaru -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let isScrolling = false;
+            let scrollInterval = null;
+
+            const autoScrollToggleButtons = document.querySelectorAll("#auto-scroll-toggle"); // Mengambil semua tombol dengan ID ini
+
+            function startAutoScroll() {
+                scrollInterval = setInterval(() => {
+                    window.scrollBy({ top: 1, behavior: "smooth" }); // Gulir perlahan
+                }, 10); // Interval gulir setiap 10ms
+            }
+
+            function stopAutoScroll() {
+                clearInterval(scrollInterval);
+                scrollInterval = null;
+            }
+
+            function toggleAutoScroll(button) {
+                if (isScrolling) {
+                    stopAutoScroll();
+                    updateButtonIcon(button, "play-outline");
+                } else {
+                    startAutoScroll();
+                    updateButtonIcon(button, "pause-outline");
+                }
+                isScrolling = !isScrolling;
+            }
+
+            function updateButtonIcon(button, iconName) {
+                const iconElement = button.querySelector("ion-icon");
+                if (iconElement) {
+                    iconElement.setAttribute("name", iconName);
+                }
+            }
+
+            autoScrollToggleButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    toggleAutoScroll(button);
+                });
+            });
+        });
+    </script>
+    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ambil semua elemen dengan kelas 'latin' dan 'terjemah'
+            const latinElements = document.querySelectorAll('.latin');
+            const terjemahElements = document.querySelectorAll('.terjemah');
+
+            // Fungsi toggle untuk elemen tertentu
+            function toggleElements(elements) {
+                elements.forEach(element => {
+                    if (element.classList.contains('hidden')) {
+                        element.classList.remove('hidden');
+                    } else {
+                        element.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Tambahkan event listener untuk tombol toggle
+            document.getElementById('toggle-all-terjemah').addEventListener('click', function () {
+                toggleElements(terjemahElements);
+            });
+
+            document.getElementById('toggle-all-latin').addEventListener('click', function () {
+                toggleElements(latinElements);
+            });
+        });
+    </script>
 </body>
 
 </html>
