@@ -12,6 +12,7 @@ def alquran_list(request):
         return render(request, 'index.html', {'data': data})
     else:
         return render(request, 'index.html', {'data': None})
+    
 def alquran_details(request, id):
     if not id:
         return render(request, 'error.html', {'error_message': 'ID is required'})
