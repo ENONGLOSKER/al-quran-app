@@ -1,8 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% load pwa %}
-    {% progressive_web_app_meta %}
+{% load pwa %}
+{% progressive_web_app_meta %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,7 +78,7 @@
             font-size: 20px;
         }
 
-        .last-read{
+        .last-read {
             background-image: linear-gradient(-30deg, #7EC89D, #03644F);
             padding: 12px 20px;
             display: flex;
@@ -87,25 +88,32 @@
             border-radius: 12px;
             color: white;
         }
-        .last-read img{
+
+        .last-read img {
             width: 110px;
             height: auto;
             animation: bounce 1s infinite;
         }
+
         @keyframes bounce {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-12px);
             }
         }
-        .last-read span{
+
+        .last-read span {
             margin-top: 20px;
             margin-bottom: 12px;
             display: block;
         }
-        .last-read p{
+
+        .last-read p {
             background-color: white;
             width: fit-content;
             padding: 12px;
@@ -115,10 +123,12 @@
             color: black;
             margin-top: -8px;
         }
-        .surah-list{
+
+        .surah-list {
             margin-top: 20px;
         }
-        .surah{
+
+        .surah {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -130,50 +140,59 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .surah:hover{
+
+        .surah:hover {
             background-color: #f1f1f1;
         }
-        .surah .info{
+
+        .surah .info {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .surah .info span{
+
+        .surah .info span {
             padding: 5px;
             color: #03644F;
             position: relative;
         }
-        .surah .info span img{
+
+        .surah .info span img {
             width: 40px;
             height: auto;
             position: absolute;
         }
-        #surah-name{
+
+        #surah-name {
             margin-left: 10px;
         }
-        #surah-name p:nth-child(1){
+
+        #surah-name p:nth-child(1) {
             font-weight: 700;
             font-size: 18px;
             margin-bottom: -10px;
             color: #03644F;
         }
-        #surah-name p:nth-child(2){
+
+        #surah-name p:nth-child(2) {
             color: gray;
             font-size: 12px;
         }
-        .arabic{
+
+        .arabic {
             color: black;
             font-size: 20px;
             font-weight: bold;
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>Al-Qur'an</h1>
         <form action="" class="search-bar">
-            <input type="text" placeholder="Cari surah...">
-            <button>
+            <input type="text" id="search-input" placeholder="Cari surah...">
+            <button type="button" id="search-button">
                 <ion-icon name="search-outline" id="icons"></ion-icon>
             </button>
         </form>
@@ -194,7 +213,7 @@
         <div class="surah-list">
             {% for surah in data %}
             <div class="surah">
-                <div class="info" style="display: flex; align-items: center; gap: 10px;">
+                <!-- <div class="info" style="display: flex; align-items: center; gap: 10px;">
                     <span
                         style="padding: 5px; color: #03644F; position: relative; width: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                         <p>{{ surah.nomor }}</p>
@@ -206,8 +225,10 @@
                     </div>
                 </div>
                 <div class="arabic">
-                    <a href="{% url 'alquran_details' surah.nomor %}" style="text-decoration: none; color: black;">{{ surah.nama }}</a>
-                </div>
+                    <a href="{% url 'alquran_details' surah.nomor %}" style="text-decoration: none; color: black;">{{
+                        surah.nama
+                        }}</a>
+                    </div> -->
             </div>
             {% endfor %}
 
@@ -217,6 +238,7 @@
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <script>
         let surahList = [];
 
@@ -244,20 +266,20 @@
                 const surahElement = document.createElement('div');
                 surahElement.classList.add('surah');
                 surahElement.innerHTML = `
-                                            <div class="info" style="display: flex; align-items: center; gap: 10px;">
-                                                <span style="padding: 5px; color: #03644F; position: relative; width: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                                    <p>${surah.nomor}</p>
-                                                    <img src="{% static 'img/iconsayat.png' %}" alt="logo nomor" style="width: 40px; height: auto; position: absolute;">
-                                                </span>
-                                                <div id="surah-name">
-                                                    <p>${surah.nama_latin}</p>
-                                                    <p>${surah.tempat_turun} | ${surah.jumlah_ayat} Ayat</p>
-                                                </div>
-                                            </div>
-                                            <div class="arabic">
-                                                <a href="/alquran_details/${surah.nomor}" style="text-decoration: none; color: black;">${surah.nama}</a>
-                                            </div>
-                                        `;
+                    <div class="info" style="display: flex; align-items: center; gap: 10px;">
+                        <span style="padding: 5px; color: #03644F; position: relative; width: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <p>${surah.nomor}</p>
+                            <img src="{% static 'img/iconsayat.png' %}" alt="logo nomor" style="width: 40px; height: auto; position: absolute;">
+                        </span>
+                        <div id="surah-name">
+                            <p>${surah.nama_latin}</p>
+                            <p>${surah.tempat_turun} | ${surah.jumlah_ayat} Ayat</p>
+                        </div>
+                    </div>
+                    <div class="arabic">
+                        <a href="details/${surah.nomor}" style="text-decoration: none; color: black;">${surah.nama}</a>
+                    </div>
+                `;
                 surahContainer.appendChild(surahElement);
             });
         }
@@ -271,14 +293,23 @@
             displaySurah(filteredSurah);
         }
 
-                    // Event listener untuk input pencarian
-                    document.querySelector('.search-bar input').addEventListener('input', (event) => {
-                        const query = event.target.value;
-                        searchSurah(query);
-                    });
+                // Event listener untuk input pencarian (ketika mengetik)
+                document.getElementById('search-input').addEventListener('input', (event) => {
+                    const query = event.target.value;
+                    searchSurah(query);
+                });
 
-                    // Panggil fungsi untuk memuat data saat halaman dimuat
-                    loadSurahData();
-                </script>
+                // Event listener untuk tombol pencarian
+                document.getElementById('search-button').addEventListener('click', () => {
+                    const query = document.getElementById('search-input').value;
+                    searchSurah(query);
+                });
+
+                // Panggil fungsi untuk memuat data saat halaman dimuat
+                loadSurahData();
+            </script>
+
+
 </body>
+
 </html>
