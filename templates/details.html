@@ -305,7 +305,7 @@
         <div class="btn-control" style="position: fixed; bottom: 20px; left: 30px; display: block;">
             <button id="auto-scroll-toggle"
                 style="background-color: #20846E; border: none; padding: 4px; border-radius: 50px; display: flex; justify-content: center; align-items: center; box-shadow: 2px 4px 20px #7EC89D;">
-                <ion-icon name="close-outline" id="icon" style="padding: 5px; color: white; font-size: 20px;"></ion-icon>
+                <ion-icon name="chevron-collapse" id="icon" style="padding: 5px; color: white; font-size: 20px;"></ion-icon>
             </button>
         </div>
     </section>
@@ -362,7 +362,7 @@
             function startAutoScroll() {
                 scrollInterval = setInterval(() => {
                     window.scrollBy({ top: 1, behavior: "smooth" }); // Gulir perlahan
-                }, 10); // Interval gulir setiap 10ms
+                }, 16); // Interval gulir setiap 10ms
             }
 
             function stopAutoScroll() {
