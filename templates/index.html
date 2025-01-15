@@ -261,6 +261,9 @@
     <script>
         let deferredPrompt;
 
+            // Periksa di Local Storage apakah modal sudah pernah ditampilkan
+            const isModalShown = localStorage.getItem('installModalShown');
+
         window.addEventListener('beforeinstallprompt', (event) => {
             // Cegah browser menampilkan prompt default
             event.preventDefault();
@@ -268,29 +271,34 @@
             // Simpan event untuk digunakan nanti
             deferredPrompt = event;
 
-            // Tampilkan modal
-            const installModal = document.getElementById('installModal');
-            installModal.style.display = 'flex';
+            // Jika modal belum pernah ditampilkan, tampilkan modal
+            if (!isModalShown) {
+                const installModal = document.getElementById('installModal');
+                installModal.style.display = 'flex';
 
-            // Tangani tombol "Install" di modal
-            const installButton = document.getElementById('installButton');
-            installButton.addEventListener('click', () => {
-                // Tampilkan prompt instalasi
-                deferredPrompt.prompt();
+                // Tangani tombol "Install" di modal
+                const installButton = document.getElementById('installButton');
+                installButton.addEventListener('click', () => {
+                    // Tampilkan prompt instalasi
+                    deferredPrompt.prompt();
 
-                // Tunggu hingga pengguna merespons prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    } else {
-                        console.log('User dismissed the install prompt');
-                    }
-                    deferredPrompt = null;
+                    // Tunggu hingga pengguna merespons prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        } else {
+                            console.log('User dismissed the install prompt');
+                        }
+                        deferredPrompt = null;
+                    });
+
+                    // Sembunyikan modal setelah memilih
+                    installModal.style.display = 'none';
                 });
 
-                // Sembunyikan modal setelah memilih
-                installModal.style.display = 'none';
-            });
+                // Simpan status ke Local Storage agar modal tidak muncul lagi
+                localStorage.setItem('installModalShown', 'true');
+            }
         });
 
         // Tangani klik di luar modal untuk menutup
@@ -302,7 +310,7 @@
         });
 
     </script>
-    
+
     <!-- fungsi serching -->
     <script>
         let surahList = [];
@@ -358,21 +366,21 @@
             displaySurah(filteredSurah);
         }
 
-                // Event listener untuk input pencarian (ketika mengetik)
-                document.getElementById('search-input').addEventListener('input', (event) => {
-                    const query = event.target.value;
-                    searchSurah(query);
-                });
+            // Event listener untuk input pencarian (ketika mengetik)
+            document.getElementById('search-input').addEventListener('input', (event) => {
+                const query = event.target.value;
+                searchSurah(query);
+            });
 
-                // Event listener untuk tombol pencarian
-                document.getElementById('search-button').addEventListener('click', () => {
-                    const query = document.getElementById('search-input').value;
-                    searchSurah(query);
-                });
+            // Event listener untuk tombol pencarian
+            document.getElementById('search-button').addEventListener('click', () => {
+                const query = document.getElementById('search-input').value;
+                searchSurah(query);
+            });
 
-                // Panggil fungsi untuk memuat data saat halaman dimuat
-                loadSurahData();
-</script>
+            // Panggil fungsi untuk memuat data saat halaman dimuat
+            loadSurahData();
+        </script>
 
 
 </body>
