@@ -2,6 +2,10 @@ from django.shortcuts import render
 import requests
 
 # Create your views here.
+def offline_view(request):
+    data = "Maaf, terjadi masalah dengan koneksi internet Anda. 🙏"
+    return render(request, 'offline.html', {'data':data})
+
 def alquran_list(request):
     # surah_number = request.GET.get('surah', 1)
     api_url = f"https://quran-api.santrikoding.com/api/surah"

@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.alquran_list, name='alquran_list'),
+    path('offline/', views.offline_view, name='offline'),
     path('details/<int:id>/', views.alquran_details, name='alquran_details'),
     # pwa
     path('', include('pwa.urls')),

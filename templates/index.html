@@ -184,6 +184,11 @@
             font-size: 20px;
             font-weight: bold;
         }
+
+        #icone {
+            color: rgb(185, 185, 185);
+            transform: translateY(2px);
+        }
     </style>
 </head>
 
@@ -200,7 +205,10 @@
 
     <section>
         <p>Assalamualaikum</p>
-        <h4>Zaenul Alqusairi</h4>
+        <h4>
+            <span id="username">Default Name</span>
+            <ion-icon name="create-outline" id="icone" onclick="editName()"></ion-icon>
+        </h4>
 
         <div class="last-read">
             <div>
@@ -247,9 +255,13 @@
                     <p style="margin: 0; color: gray;">Al-Qur’an Digital to screen</p>
                 </div>
             </div>
+            <button id="btn-no"
+                style="background: #000000; color: white; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; ">
+                No
+            </button>
             <button id="installButton"
                 style="background: #13A795; color: white; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; ">
-                Install
+                Oke
             </button>
         </div>
     </div>
@@ -259,11 +271,58 @@
 
     <!-- pwa -->
     <script>
+        // Fungsi untuk mengedit nama
+        function editName() {
+            const userNameElement = document.getElementById('username');
+            const currentName = userNameElement.textContent.trim();
+            const newName = prompt("Edit nama:", currentName);
+
+            if (newName && newName.trim() !== "") {
+                userNameElement.textContent = newName.trim();
+                localStorage.setItem('userName', newName.trim()); // Simpan nama baru di localStorage
+            }
+        }
+
+        // Memuat nama dari localStorage saat halaman dimuat
+        window.onload = function () {
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+                document.getElementById('username').textContent = savedName;
+            }
+        };
+    </script>
+    <script>
         let deferredPrompt;
+            const modals = document.getElementById('installModal')
+            const btnNo = document.getElementById('btn-no')
+            const btnOke = document.getElementById('installButton')
 
-            // Periksa di Local Storage apakah modal sudah pernah ditampilkan
-            const isModalShown = localStorage.getItem('installModalShown');
+            // modal
+            function modalShow() {
+                modals.style.display = 'flex'; //show
+            }
 
+            // menampilkan jika sudah show = true
+            if (!localStorage.getItem("sudahShow")) {
+                modalShow();
+                localStorage.setItem("sudahShow", true)
+            } else {
+                modals.style.display = 'none'; //no't show
+            }
+
+            // tutup modal dengan menekan tombol no 
+            btnNo.addEventListener('click', () => {
+                modals.style.display = 'none'; //no't show
+            })
+
+            // tutup modal dengan menekan diluar modal atau window
+            window.addEventListener('click', (event) => {
+                if (event.target === modals) {
+                    modals.style.display = 'none';
+                }
+            })
+
+            // install apps
         window.addEventListener('beforeinstallprompt', (event) => {
             // Cegah browser menampilkan prompt default
             event.preventDefault();
@@ -271,48 +330,38 @@
             // Simpan event untuk digunakan nanti
             deferredPrompt = event;
 
-            // Jika modal belum pernah ditampilkan, tampilkan modal
-            if (!isModalShown) {
+            // Jika aplikasi belum diinstal dan pengguna belum memilih "No", tampilkan modal
+            if (!isPwaInstalled && !userDismissedModal) {
                 const installModal = document.getElementById('installModal');
                 installModal.style.display = 'flex';
-
-                // Tangani tombol "Install" di modal
-                const installButton = document.getElementById('installButton');
-                installButton.addEventListener('click', () => {
-                    // Tampilkan prompt instalasi
-                    deferredPrompt.prompt();
-
-                    // Tunggu hingga pengguna merespons prompt
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('User accepted the install prompt');
-                        } else {
-                            console.log('User dismissed the install prompt');
-                        }
-                        deferredPrompt = null;
-                    });
-
-                    // Sembunyikan modal setelah memilih
-                    installModal.style.display = 'none';
-                });
-
-                // Simpan status ke Local Storage agar modal tidak muncul lagi
-                localStorage.setItem('installModalShown', 'true');
             }
         });
 
-        // Tangani klik di luar modal untuk menutup
-        window.addEventListener('click', (event) => {
-            const installModal = document.getElementById('installModal');
-            if (event.target === installModal) {
+            document.getElementById('installButton').addEventListener('click', () => {
+                if (deferredPrompt) {
+                    // Tampilkan prompt instalasi
+                    deferredPrompt.prompt();
+
+                // Tunggu hingga pengguna merespons prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        // Simpan status instalasi ke Local Storage
+                        localStorage.setItem('pwaInstalled', true);
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+
+                // Sembunyikan modal setelah memilih
+                const installModal = document.getElementById('installModal');
                 installModal.style.display = 'none';
             }
         });
 
-    </script>
 
-    <!-- fungsi serching -->
-    <script>
+            // fungsi sercring
         let surahList = [];
 
         // Fungsi untuk memuat data dari API
@@ -339,20 +388,20 @@
                 const surahElement = document.createElement('div');
                 surahElement.classList.add('surah');
                 surahElement.innerHTML = `
-                    <div class="info" style="display: flex; align-items: center; gap: 10px;">
-                        <span style="padding: 5px; color: #03644F; position: relative; width: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <p>${surah.nomor}</p>
-                            <img src="{% static 'img/iconsayat.png' %}" alt="logo nomor" style="width: 40px; height: auto; position: absolute;">
-                        </span>
-                        <div id="surah-name">
-                            <p>${surah.nama_latin}</p>
-                            <p>${surah.tempat_turun} | ${surah.jumlah_ayat} Ayat</p>
+                        <div class="info" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="padding: 5px; color: #03644F; position: relative; width: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <p>${surah.nomor}</p>
+                                <img src="{% static 'img/iconsayat.png' %}" alt="logo nomor" style="width: 40px; height: auto; position: absolute;">
+                            </span>
+                            <div id="surah-name">
+                                <p>${surah.nama_latin}</p>
+                                <p>${surah.tempat_turun} | ${surah.jumlah_ayat} Ayat</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="arabic">
-                        <a href="details/${surah.nomor}" style="text-decoration: none; color: black;">${surah.nama}</a>
-                    </div>
-                `;
+                        <div class="arabic">
+                            <a href="details/${surah.nomor}" style="text-decoration: none; color: black;">${surah.nama}</a>
+                        </div>
+                    `;
                 surahContainer.appendChild(surahElement);
             });
         }
@@ -381,7 +430,6 @@
             // Panggil fungsi untuk memuat data saat halaman dimuat
             loadSurahData();
         </script>
-
 
 </body>
 

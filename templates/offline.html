@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% load pwa %}
+{% progressive_web_app_meta %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/icon.png' %}">
+    <title>Al-Qur'an</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px;
+            /* background-image: linear-gradient(to right, #21d1ad, #03644F); */
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            color: black;
+            width: 50%;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .header input {
+            /* display: none; */
+            padding: 12px 14px;
+            border-radius: 50px;
+            border: none;
+            width: 60%;
+            border: 2px solid #35e4c149;
+            /* box-shadow: 2px 16px 30px #30e6c2; */
+        }
+
+        .header button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50px;
+            background-color: #03644F;
+            box-shadow: 2px 12px 30px #51f8d79e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+
+        #icons {
+            width: 22px;
+            height: 22px;
+            color: #ffffff;
+            /* transform: translateY(2px); */
+        }
+
+        section {
+            margin: 0 20px;
+            /* background-color: #c8f7ee; */
+        }
+
+        section h4 {
+            margin-top: -5px;
+            font-size: 20px;
+        }
+
+        .last-read {
+            background-color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border-radius: 12px;
+            color: rgb(0, 0, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Al-Qur'an</h1>
+        <form action="" class="search-bar">
+            <input type="text" id="search-input" placeholder="Cari surah...">
+            <button type="button" id="search-button">
+                <ion-icon name="search-outline" id="icons"></ion-icon>
+            </button>
+        </form>
+    </div>
+
+    <section>
+        <p>Assalamualaikum</p>
+        <h4>Zaenul Alqusairi</h4>
+
+        <div class="last-read"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <img src="{% static 'img/animasierror.gif' %}" alt="Error Gif" style="width: 160px; height: auto;" />
+            <h3
+                style="font-weight: 500; font-size: 16px; background-color: rgba(255, 54, 54, 0.699); border: 3px solid rgb(229, 36, 36); padding: 12px; border-radius: 4px;">
+                {{data}}</h3>
+
+        </div>
+
+    </section>
+
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
